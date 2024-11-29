@@ -5,18 +5,19 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 const App = () => {
   const [value, setValue] = useState(""); // Store the input value as a string for appending
   const eraserIcon = <FontAwesome6 name="eraser" size={30} color="white" />;
-  const clear = ['C', eraserIcon, '%', '+'];
-  const num = [9, 8, 7, '-', 6, 5, 4, '*', 3, 2, 1, '/', '00', 0, '.', '='];
+  const clear = ['C', eraserIcon, '%', '!'];
+  const num = [9, 8, 7, '+', 6, 5, 4, '-', 3, 2, 1, '*', '00', 0, '.', '/'];
 
    // Function to calculate the result
    const calculateResult = () => {
     try {
       const result = eval(value); // Evaluate the expression
-      // setValue(result.toString());
-      return result.toString();
+      setValue(result.toString());
+      // return result.toString();
       // Display the result in the TextInput
     } catch (error) {
-      return 'Error' // Handle invalid expressions
+      setValue();
+      // return 'Error' // Handle invalid expressions
     }
   };
   // Function to handle button press
@@ -39,12 +40,13 @@ const App = () => {
     <ScrollView style={{ backgroundColor: 'black', flex: 1 }}>
       {/* Title */}
       <View>
-        <Text style={styles.title}>My Calculator</Text>
+        <Text style={styles.title}>Basic Calculator</Text>
       </View>
 
       {/* Input Box */}
       <View>
         <TextInput
+          scrollEnabled={true}
           style={styles.inputbox}
           value={value} // Bind the value to state
           placeholder="0"
@@ -86,9 +88,9 @@ const App = () => {
       </View>
 
       {/* Equal Button */}
-      {/* <TouchableOpacity style={styles.equalsBtn} onPress={calculateResult}>
+      <TouchableOpacity style={styles.equalsBtn} onPress={calculateResult}>
         <Text style={styles.equalsText}>=</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -101,6 +103,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   inputbox: {
+    flexWrap:'wrap',
     height: 160,
     borderColor: 'white',
     padding: 10,
