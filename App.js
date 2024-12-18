@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   equalsBtn: {
-    backgroundColor: '#071924'
+    backgroundColor: 'blue'
   },
   equalsText: {
     fontSize: 40,
