@@ -6,7 +6,7 @@ const App = () => {
   const [value, setValue] = useState(""); // Store the input value as a string for appending
   const eraserIcon = <FontAwesome6 name="eraser" size={30} color="white" />;
   const clear = ['C', eraserIcon, '%', '!'];
-  const num = [9, 8, 7, '+', 6, 5, 4, '-', 3, 2, 1, '*', '00', 0, '.', '/'];
+  const num = ['9', '8', '7', '+', '6', '5', '4', '-', '3', '2', '1', '*', '00', '0', '.', '/'];
 
    // Function to calculate the result
    const calculateResult = () => {
@@ -20,21 +20,35 @@ const App = () => {
       // return 'Error' // Handle invalid expressions
     }
   };
+
+  const factorial = (num) => {
+    if (num < 0) return "Error"; // Factorial of negative numbers is undefined
+    if (num === 0) return 1; // Factorial of 0 is 1
+    let result = 1;
+    for (let i = 2; i <= num; i++) {
+      result *= i;
+    }
+    return result;
+  };
   // Function to handle button press
   const handlePress = (item) => {
     if (item === 'C') {
       setValue(""); // Clear the input
     } else if (item === eraserIcon) {
       setValue((prev) => prev.slice(0, -1)); // Remove the last character
-    } 
-    else if (item === '='){
-      setValue(calculateResult)
-    }else {
+    } else if (item === '=') {
+      calculateResult(); // Calculate and display the result
+    } else if (item === '!') {
+      setValue((prev) => {
+        const num = parseInt(prev, 10);
+        return isNaN(num) ? "Error" : factorial(num).toString();
+      });
+    } else {
       setValue((prev) => prev + item); // Append the clicked item
     }
   };
+  
 
- 
 
   return (
     <ScrollView style={{ backgroundColor: 'black', flex: 1 }}>
@@ -46,12 +60,15 @@ const App = () => {
       {/* Input Box */}
       <View>
         <TextInput
-          scrollEnabled={true}
+          // scrollEnabled={true}
           style={styles.inputbox}
           value={value} // Bind the value to state
           placeholder="0"
           placeholderTextColor="gray"
           editable={false} // Prevent typing directly
+          multiline={true} // Enable wrapping to a new line
+          textAlign="right" // Align text to the right
+          
         />
       </View>
 
@@ -74,11 +91,6 @@ const App = () => {
             key={index}
             style={[
               styles.btn,
-              item === '+' && styles.plusBtn,
-              item === '-' && { backgroundColor: 'red' },
-              item === '*' && { backgroundColor: 'green' },
-              item === '/' && { backgroundColor: 'blue' },
-              item === '=' && { backgroundColor: 'green ' },
             ]}
             onPress={() => handlePress(item)}
           >
@@ -99,17 +111,19 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     color: 'white',
-    fontSize: 30,
-    textDecorationLine: 'underline',
+    fontSize: 25,
+    fontFamily: 'Italic'
+    // textDecorationLine: 'underline',
   },
   inputbox: {
+    display: 'flex',
     flexWrap:'wrap',
     height: 160,
-    borderColor: 'white',
+    // borderColor: 'white',
     padding: 10,
     borderWidth: 1,
-    marginHorizontal: 30,
-    marginVertical: 30,
+    marginHorizontal: 25,
+    marginVertical: 25,
     color: 'white',
     textAlign: 'right',
     fontFamily: 'Roboto',
@@ -119,15 +133,18 @@ const styles = StyleSheet.create({
   btncontainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginLeft: 10,
+    // marginHorizontal: 10,
+    borderWidth: 1,
+    // borderColor: 'white',
+    paddingLeft: 10
   },
   btn: {
     display: 'flex',
-    height: 70,
-    width: 70,
+    height: '20%',
+    width: '20%',
     aspectRatio: 1,
     borderRadius: 50,
-    backgroundColor: 'grey',
+    backgroundColor: '#454647',
     marginRight: 15,
     marginVertical: 10,
     justifyContent: 'center',
@@ -137,19 +154,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
   },
   btntxt: {
-    fontSize: 20,
+    fontSize: 24,
     color: 'white',
     fontWeight: 'bold',
   },
   equalsBtn: {
-    backgroundColor: 'green',
-    marginHorizontal: 30,
-    marginVertical: 20,
-    paddingVertical: 15,
-    borderRadius: 10,
+    backgroundColor: '#071924'
   },
   equalsText: {
-    fontSize: 30,
+    fontSize: 40,
     color: 'white',
     textAlign: 'center',
   },
